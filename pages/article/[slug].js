@@ -19,14 +19,14 @@ export async function getStaticPaths() {
   });
   return {
     paths: paths,
-    fallback: true,
+    fallback: false,
   };
 }
 
 export async function getStaticProps(context) {
-  console.log(context.params.slug);
+  // console.log(context.params.slug);
   const thisArticle = await getArticle(context.params.slug);
-  console.log(thisArticle);
+  // console.log(thisArticle);
   return { props: { article: thisArticle, slug: thisArticle.slug } };
 }
 
