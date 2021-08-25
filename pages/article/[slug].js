@@ -21,7 +21,6 @@ export async function getStaticPaths() {
   return {
     paths: paths,
     fallback: "blocking",
-    revalidate: config.regenerateTime,
   };
 }
 
@@ -29,7 +28,10 @@ export async function getStaticProps(context) {
   // console.log(context.params.slug);
   const thisArticle = await getArticle(context.params.slug);
   // console.log(thisArticle);
-  return { props: { article: thisArticle, slug: thisArticle.slug } };
+  return {
+    props: { article: thisArticle, slug: thisArticle.slug },
+    revalidate: config.regenerateTime,
+  };
 }
 
 export default ArticlePage;
