@@ -2,6 +2,7 @@ import * as React from "react";
 import Layout from "./../../components/Layout";
 import Article from "./../../components/Article";
 import { getArticle, getArticles } from "./../../lib/articles";
+import config from "./../../config";
 
 const ArticlePage = ({ article }) => {
   // console.log(article);
@@ -19,7 +20,8 @@ export async function getStaticPaths() {
   });
   return {
     paths: paths,
-    fallback: false,
+    fallback: "blocking",
+    revalidate: config.regenerateTime,
   };
 }
 

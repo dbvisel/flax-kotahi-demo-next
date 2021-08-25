@@ -3,10 +3,11 @@ import Link from "next/link";
 import Layout from "./../components/Layout";
 import { Button, Heading, CenteredColumn, DateParser } from "@pubsweet/ui";
 import { getArticles } from "./../lib/articles";
+import config from "./../config";
 
 const Index = ({ articles }) => {
   const fireWebhook = () => {
-    fetch("https://api.netlify.com/build_hooks/61234a4e2d8c8275e0804bf5") //TODO: put in real URL here!
+    fetch(config.webhookUrl)
       .then(function (response) {
         return response.json();
       })
@@ -52,5 +53,8 @@ const Index = ({ articles }) => {
 export default Index;
 
 export async function getStaticProps() {
-  return { props: { articles: await getArticles() } };
+  return {
+    props: { articles: await getArticles() },
+    revalidate: config.regenerateTime,
+  };
 }
