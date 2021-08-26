@@ -5,10 +5,13 @@ import { getArticle, getArticles } from "./../../lib/articles";
 import config from "./../../config";
 
 const ArticlePage = ({ article }) => {
-  // console.log(article);
   return (
-    <Layout title={article.title}>
-      <Article title={article.title} content={article.content} />
+    <Layout title={article.meta.title}>
+      <Article
+        title={article.meta.title}
+        content={article.meta.source}
+        metadata={article}
+      />
     </Layout>
   );
 };
@@ -16,7 +19,7 @@ const ArticlePage = ({ article }) => {
 export async function getStaticPaths() {
   const allTheArticles = await getArticles();
   const paths = allTheArticles.map((article) => {
-    return { params: { slug: article.slug } };
+    return { params: { id: article.id } };
   });
   return {
     paths: paths,
@@ -26,10 +29,9 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   // console.log(context.params.slug);
-  const thisArticle = await getArticle(context.params.slug);
-  // console.log(thisArticle);
+  const thisArticle = await getArticle(context.params.id);
   return {
-    props: { article: thisArticle, slug: thisArticle.slug },
+    props: { article: thisArticle, id: thisArticle.id },
     revalidate: config.regenerateTime,
   };
 }
